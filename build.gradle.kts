@@ -17,6 +17,7 @@ dependencies {
     // Kotest - фреймворк для тестирования
     testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
     testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+    testImplementation("io.kotest:kotest-framework-engine:5.8.0") // Добавлено
     
     // Selenide - для UI-тестирования
     implementation("com.codeborne:selenide:6.19.1")
@@ -31,6 +32,21 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    
+    // Вывод информации о тестах
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
+        showExceptions = true
+        showStackTraces = true
+        showCauses = true
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+    
+    // Тесты должны продолжаться даже если один падает
+    failFast = false
+    
+    // Принудительно запустить все тесты даже если не изменились
+    outputs.upToDateWhen { false }
 }
 
 kotlin {
